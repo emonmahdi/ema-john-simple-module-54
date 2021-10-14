@@ -1,9 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import useFirebase from '../../hooks/useFirebase';
+import { Link, useLocation, useHistory } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth'; 
 
 const Login = () => { 
-    const {user , signInUsingGoogle} = useFirebase()
+    const { signInUsingGoogle} = useAuth();
+    const location = useLocation();
+    const history = useHistory();
+    const redirect_uri = location.state?.from || '/shop' 
+
+    const handleGoogleLogin = () => {
+        signInUsingGoogle()
+            .then(result => {
+                history.push(redirect_uri)
+            })
+    }
+
     return (
         <div className='d-flex justify-content-center align-items-center border w-25 p-3 mt-4 mx-auto'>
             <div >
@@ -15,9 +26,9 @@ const Login = () => {
                     <br />
                     <input className='btn btn-primary' type="submit" value='Submit' />
                 </form>
-                <p>New User Ema-John ? <Link to='/register'>Create Account</Link> </p>
+                <p>New User Ema-John Website? <Link to='/register'>Create Account</Link> </p>
                 <div>---------------or--------------</div>
-                <button onClick={signInUsingGoogle} className='btn btn-warning'> Google Sign In</button>
+                <button onClick={handleGoogleLogin} className='btn btn-warning'> Google Sign In</button>
             </div>
         </div>
     );

@@ -13,17 +13,16 @@ const useFirebase = () =>{
     const googleProvider = new GoogleAuthProvider();
 
     const signInUsingGoogle = () => {
-        signInWithPopup(auth, googleProvider)
-            .then(result => {
-                console.log(user.result)
-            })
+      return signInWithPopup(auth, googleProvider)
+            
     }
 
     const logOut = () => {
-        signOut(auth)
-            .then(result => {
-
-            })
+        signOut(auth).then(() => {
+             setUser({})
+          }).catch((error) => {
+            console.log(error.message)
+          });
     }
     // oberve whether user auth state change or not 
     useEffect( () => {
